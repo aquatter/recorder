@@ -38,7 +38,7 @@ def generate_launch_description() -> LaunchDescription:
                 "-p",
                 "jpeg_quality:=50",
                 "-p",
-                "FrameDurationLimits:=[100000,100000]"
+                "FrameDurationLimits:=[100000,100000]",
             ],
         )
     )
@@ -50,20 +50,11 @@ def generate_launch_description() -> LaunchDescription:
     )
 
     ld.add_action(
-        Node(
-            package="ublox_gps",
-            executable="ublox_gps_node",
-            name="ublox_gps",
-            ros_arguments=["-p", "device:=/dev/ttyAMA0"],
+        IncludeLaunchDescription(
+            get_abs_path_to_launch_file("gpsd_client", "launch/gpsd_client-launch.py")
         )
     )
 
-    ld.add_action(
-            Node(
-                package="image_viz",
-                executable="ImageViz",
-                name="image_viz"
-            )
-        )
+    ld.add_action(Node(package="image_viz", executable="ImageViz", name="image_viz"))
 
     return ld
