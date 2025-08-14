@@ -30,13 +30,15 @@ def generate_launch_description() -> LaunchDescription:
                 "-p",
                 "camera:=0",
                 "-p",
-                "width:=160",
+                "width:=3840",
                 "-p",
-                "height:=120",
+                "height:=2400",
                 "-p",
-                "format:=RGB888",
+                "format:=BGR888",
                 "-p",
                 "jpeg_quality:=50",
+                "-p",
+                "FrameDurationLimits:=[100000,100000]"
             ],
         )
     )
@@ -55,5 +57,13 @@ def generate_launch_description() -> LaunchDescription:
             ros_arguments=["-p", "device:=/dev/ttyAMA0"],
         )
     )
+
+    ld.add_action(
+            Node(
+                package="image_viz",
+                executable="ImageViz",
+                name="image_viz"
+            )
+        )
 
     return ld
