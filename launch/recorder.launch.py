@@ -25,7 +25,7 @@ def generate_launch_description() -> LaunchDescription:
         Node(
             package="camera_ros",
             executable="camera_node",
-            name="camera_ros",
+            name="camera",
             ros_arguments=[
                 "-p",
                 "camera:=0",
@@ -36,7 +36,7 @@ def generate_launch_description() -> LaunchDescription:
                 "-p",
                 "format:=BGR888",
                 "-p",
-                "jpeg_quality:=50",
+                "jpeg_quality:=70",
                 "-p",
                 "FrameDurationLimits:=[100000,100000]",
             ],
