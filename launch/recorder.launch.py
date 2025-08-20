@@ -1,11 +1,9 @@
-import launch
 import launch_ros
-from launch.actions import IncludeLaunchDescription
 from launch_ros.actions import Node
+
+import launch
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.conditions import IfCondition
-from launch.substitutions import LaunchConfiguration
+from launch.actions import ExecuteProcess, IncludeLaunchDescription
 
 
 def get_abs_path_to_launch_file(package_name, rel_path):
@@ -25,7 +23,7 @@ def generate_launch_description() -> LaunchDescription:
         Node(
             package="camera_ros",
             executable="camera_node",
-            name="camera_ros",
+            name="camera",
             ros_arguments=[
                 "-p",
                 "camera:=0",
@@ -36,7 +34,7 @@ def generate_launch_description() -> LaunchDescription:
                 "-p",
                 "format:=BGR888",
                 "-p",
-                "jpeg_quality:=50",
+                "jpeg_quality:=70",
                 "-p",
                 "FrameDurationLimits:=[100000,100000]",
             ],
@@ -56,5 +54,26 @@ def generate_launch_description() -> LaunchDescription:
     )
 
     ld.add_action(Node(package="image_viz", executable="ImageViz", name="image_viz"))
+
+    ld.add_action(
+        ExecuteProcess(
+            cmd=[
+                "ros2",
+                "bag",
+                "record",
+                "--start-paused",
+                "--compression-mode",
+                "file",
+                "-d",
+                "30",
+                "--topics",
+                "/camera/image_raw",
+                "/imu/mpu6050",
+                "/fix",
+            ],
+            output="screen",
+            cwd="/root/data",
+        )
+    )
 
     return ld
