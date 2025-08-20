@@ -67,7 +67,7 @@ def generate_launch_description() -> LaunchDescription:
                 "-d",
                 "30",
                 "--topics",
-                "/camera/image_raw",
+                "/camera/image_raw/compressed",
                 "/imu/mpu6050",
                 "/fix",
             ],
